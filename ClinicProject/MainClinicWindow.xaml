@@ -1,0 +1,170 @@
+﻿<Window x:Class="ClinicProject.MainClinicWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:ad="http://schemas.xceed.com/wpf/xaml/avalondock"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        xmlns:local="clr-namespace:ClinicProject"
+        Title="Регистрация пациентов и посещений" Height="450" Width="800"
+         >
+    <Window.Resources>
+       
+        <local:ViewModelPatient x:Key="ViewModelPatient"/>
+        <local:ViewModelVisit x:Key="ViewModelVisit"/>
+        <local:RadioBoolToIntConverter x:Key="radioBoolToIntConverter" />
+        <local:GenderConverter x:Key="GenderConverter" />
+        <local:RadioBoolToIntConverterTypeVisit x:Key="RadioBoolToIntConverterTypeVisit" />
+        <local:TypeVisitConverter x:Key="TypeVisitConverter" />
+        
+       
+
+
+    </Window.Resources>
+    <!--<Window.Resources>
+        <ResourceDictionary >
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Themes/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+
+
+        </ResourceDictionary>
+        </Window.Resources>-->
+            
+    <Grid>
+
+
+        <TabControl Name="TabControl">
+            <TabItem Header="Картотека пациентов" Name="TabItemPatient"  DataContext="{Binding Source={StaticResource ViewModelPatient}}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <ToolBar>
+                        <Button Command="{Binding AddCommand}" Width="35" Height="35">
+                            <Image Source="Image\icons8-добавить-40.png"></Image>
+                        </Button>
+                        <Button Command="{Binding EditCommand}" Width="35" Height="35">
+                            <Image Source="Image\icons8-редактировать-40.png"></Image>
+                        </Button>
+                        <Button Command="{Binding SaveCommand}"  Name="SavePatient" Click="SavePatient_Click" Width="35" Height="35">
+                            <Image Source="Image\icons8-сохранить-40.png"></Image>
+                        </Button>
+                        <Separator/>
+                        <Button Command="{Binding DeleteCommand}" Width="35" Height="35">
+                            <Image Source="Image\icons8-удалить-40.png"></Image>
+                        </Button>
+                        <Separator/>
+                        <Button  Width="35" Height="35" IsEnabled="{Binding AddVisitButton}" Name="AddVisit" Click="AddVisit_Click" >
+                            <Image Source="Image\icons8-добавить-свойство-40.png"></Image>
+                        </Button>
+                    </ToolBar>
+                    <Expander Grid.Row="1" Name="ExpanderPatient" Header="Просмотр текущей записи" IsExpanded="{Binding Expand}">
+                        <Grid IsEnabled="{Binding IsEnabledPatientEdit}" Margin="3"   Name="GridEditPatient">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30"></RowDefinition>
+                                <RowDefinition Height="30"></RowDefinition>
+                                <RowDefinition Height="30"></RowDefinition>
+                                <RowDefinition Height="30"></RowDefinition>
+                                <RowDefinition Height="30"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                                <ColumnDefinition Width="0.3*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock>ФИО пациента</TextBlock>
+                            <TextBox x:Name="tbName" Grid.Column="1" Margin="2" Text="{Binding Path=Patient.Name, UpdateSourceTrigger=Explicit}"></TextBox>
+                            <TextBlock Grid.Row="1" >Адрес проживания</TextBlock>
+                            <TextBox x:Name="tbAdress" Margin="2" Grid.Row="1" Grid.Column="1" Text="{Binding Path=Patient.Adress, UpdateSourceTrigger=Explicit}"></TextBox>
+                            <TextBlock Grid.Row="2">Дата рождения</TextBlock>
+                            <DatePicker Name="dpDate" Margin="2" Grid.Row="2" Grid.Column="1"   SelectedDate="{Binding Path=Patient.DateBirth, UpdateSourceTrigger=Explicit}"></DatePicker>
+                            <TextBlock Grid.Row="4">Укажите пол</TextBlock>
+                            <StackPanel Grid.Row="4" Margin="2" Grid.Column="1" Orientation="Horizontal">
+                                <RadioButton x:Name="rbMen" IsChecked="{Binding Path=Patient.Gender, UpdateSourceTrigger=Explicit, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=1}" >Мужской</RadioButton>
+                                <RadioButton x:Name="rbWmen" IsChecked="{Binding Path=Patient.Gender, UpdateSourceTrigger=Explicit, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=0}"  >Женский</RadioButton>
+                            </StackPanel>
+                            <TextBlock Grid.Row="3">Телефон</TextBlock>
+                            <TextBox x:Name="tbPhone" Margin="2"  Grid.Row="3" Grid.Column="1" Text="{Binding Path=Patient.Telephone, UpdateSourceTrigger=Explicit}"></TextBox>
+                        </Grid>
+                    </Expander>
+                    <DataGrid x:Name="PatientsDataGrid" HorizontalGridLinesBrush="Gainsboro" VerticalGridLinesBrush="Gainsboro" Grid.Row="2" IsReadOnly="True"  AutoGenerateColumns="False"  CanUserAddRows="False" ItemsSource="{Binding Patients, UpdateSourceTrigger=Explicit}" SelectedItem="{Binding Patient}">
+
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ФИО пациента" Binding="{Binding Path=Name}" Width="*"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Адрес" Binding="{Binding Path=Adress}" Width="*"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Дата рождения" Binding="{Binding Path=DateBirth, StringFormat=dd.MM.yyyy}" Width="*"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Пол"  Binding="{Binding Path=Gender,Converter= {StaticResource GenderConverter}}" Width="*"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Телефон" Binding="{Binding Path=Telephone}" Width="*" ></DataGridTextColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Посещения" Name="TabItemVisit"   DataContext="{Binding Source={StaticResource ViewModelVisit}}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <ToolBar>
+                        <!--<Button Command="{Binding AddCommand}" >Добавить</Button>-->
+                        <Button Command="{Binding EditCommand}" Width="35" Height="35">
+                            <Image Source="Image\icons8-редактировать-40.png"></Image></Button>
+                        <Button Command="{Binding SaveCommand}"  Name="SaveVisit" Click="SaveVisit_Click" Width="35" Height="35">
+                            <Image Source="Image\icons8-сохранить-40.png"></Image></Button>
+                        <Separator/>
+                        <Button Command="{Binding DeleteCommand}" Width="35" Height="35">
+                            
+                            <Image Source="Image\icons8-удалить-40.png"></Image></Button>
+      
+                    </ToolBar>
+                    <Expander Grid.Row="1" Name="ExpanderVisit" Header="Просмотр текущей записи" IsExpanded="{Binding Expand}">
+                        <Grid IsEnabled="{Binding IsEnabledVisitEdit}" Margin="3" Name="GridEditVisit"  >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30"></RowDefinition>
+                                <RowDefinition ></RowDefinition>
+                                <RowDefinition Height="30"></RowDefinition>
+                                <RowDefinition Height="30"></RowDefinition>
+                                <RowDefinition Height="30"></RowDefinition>
+                                
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                                <ColumnDefinition Width="0.3*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock>ФИО пациента</TextBlock>
+                            <TextBox IsReadOnly="True" Margin="2" x:Name="tbNamePatient" Grid.Column="1" Text="{Binding Path=Visit.Patient.Name, UpdateSourceTrigger=Explicit}"></TextBox>
+                            <TextBlock Grid.Row="2">Дата посещения</TextBlock>
+                            <DatePicker Name="dpDateVisit" Margin="2" Grid.Row="2" Grid.Column="1"   SelectedDate="{Binding Path=Visit.DateVisit, UpdateSourceTrigger=Explicit}"></DatePicker>
+                            <TextBlock Grid.Row="4">Тип посещения</TextBlock>
+                            <StackPanel Grid.Row="4" Margin="2" Grid.Column="1" Orientation="Horizontal">
+                                <RadioButton x:Name="rbTypeVisitFirst" IsChecked="{Binding Path=Visit.TypeVisit, UpdateSourceTrigger=Explicit, Converter={StaticResource RadioBoolToIntConverterTypeVisit}, ConverterParameter=1}" >Первичный</RadioButton>
+                                <RadioButton x:Name="rbTypeVisitTwo" IsChecked="{Binding Path=Visit.TypeVisit, UpdateSourceTrigger=Explicit, Converter={StaticResource RadioBoolToIntConverterTypeVisit}, ConverterParameter=2}"  >Вторичный</RadioButton>
+                            </StackPanel>
+                            <TextBlock Grid.Row="3">Диагноз</TextBlock>
+                            <TextBox x:Name="tbDiagnosis" Margin="2" Grid.Row="3" Grid.Column="1" Text="{Binding Path=Visit.Diagnosis, UpdateSourceTrigger=Explicit}"></TextBox>
+                        </Grid>
+                    </Expander>
+                    <DataGrid x:Name="VisitsDataGrid" Grid.Row="2" IsReadOnly="True"  AutoGenerateColumns="False"  CanUserAddRows="False" ItemsSource="{Binding Visits, UpdateSourceTrigger=Explicit}" SelectedItem="{Binding Visit}">
+
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ФИО пациента" Binding="{Binding Path=Patient.Name}" Width="*"></DataGridTextColumn>
+
+                            <DataGridTextColumn Header="Дата рождения" Binding="{Binding Path=DateVisit,  StringFormat=dd.MM.yyyy}" Width="*"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Тип посещения"  Binding="{Binding Path=TypeVisit,Converter= {StaticResource TypeVisitConverter}}" Width="*"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Диагноз" Binding="{Binding Path=Diagnosis}" Width="*" ></DataGridTextColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+            
+        </TabControl>
+    </Grid>
+</Window>
