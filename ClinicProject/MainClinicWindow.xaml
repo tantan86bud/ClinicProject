@@ -45,21 +45,21 @@
                         <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
                     <ToolBar>
-                        <Button Command="{Binding AddCommand}" Width="35" Height="35">
+                        <Button Command="{Binding AddCommand}" Width="35" Height="35" ToolTip="Добавить пациента">
                             <Image Source="Image\icons8-добавить-40.png"></Image>
                         </Button>
-                        <Button Command="{Binding EditCommand}" Width="35" Height="35">
+                        <Button Command="{Binding EditCommand}" Width="35" Height="35" ToolTip="Редактировать карточку пациента">
                             <Image Source="Image\icons8-редактировать-40.png"></Image>
                         </Button>
-                        <Button Command="{Binding SaveCommand}"  Name="SavePatient" Click="SavePatient_Click" Width="35" Height="35">
+                        <Button Command="{Binding SaveCommand}"  Name="SavePatient" ToolTip="Сохранить карточку пациента" Click="SavePatient_Click" Width="35" Height="35">
                             <Image Source="Image\icons8-сохранить-40.png"></Image>
                         </Button>
                         <Separator/>
-                        <Button Command="{Binding DeleteCommand}" Width="35" Height="35">
+                        <Button Command="{Binding DeleteCommand}" ToolTip="Удалить карточку пациента" Width="35" Height="35">
                             <Image Source="Image\icons8-удалить-40.png"></Image>
                         </Button>
                         <Separator/>
-                        <Button  Width="35" Height="35" Command="{Binding AddVisitCommand}" IsEnabled="{Binding AddVisitButton}" Name="AddVisit" >
+                        <Button  Width="35" Height="35" Command="{Binding AddVisitCommand}" ToolTip="Добавить визит пациента" IsEnabled="{Binding AddVisitButton}" Name="AddVisit" >
                             <Image Source="Image\icons8-добавить-свойство-40.png"></Image>
                         </Button>
                     </ToolBar>
@@ -114,12 +114,12 @@
                     </Grid.RowDefinitions>
                     <ToolBar>
                         <!--<Button Command="{Binding AddCommand}" >Добавить</Button>-->
-                        <Button Command="{Binding EditCommand}" Width="35" Height="35">
+                        <Button Command="{Binding EditCommand}" Width="35" Height="35" ToolTip="Редактировать визит">
                             <Image Source="Image\icons8-редактировать-40.png"></Image></Button>
-                        <Button Command="{Binding SaveCommand}"  Name="SaveVisit" Click="SaveVisit_Click" Width="35" Height="35">
+                        <Button Command="{Binding SaveCommand}"  Name="SaveVisit" Click="SaveVisit_Click" Width="35" Height="35" ToolTip="Сохранить визит пациента">
                             <Image Source="Image\icons8-сохранить-40.png"></Image></Button>
                         <Separator/>
-                        <Button Command="{Binding DeleteCommand}" Width="35" Height="35">
+                        <Button Command="{Binding DeleteCommand}" Width="35" Height="35" ToolTip="Удалить визит пациента">
                             
                             <Image Source="Image\icons8-удалить-40.png"></Image></Button>
       
