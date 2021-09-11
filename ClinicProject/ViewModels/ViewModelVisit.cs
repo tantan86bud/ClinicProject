@@ -31,6 +31,7 @@ namespace ClinicProject
         //ApplicationContext db;
         private bool _expand;
         private bool _IsEnabledVisitEdit;
+        private bool _IsSelectedTabItem;
         public bool Expand
         {
             get
@@ -53,6 +54,18 @@ namespace ClinicProject
             {
                 _IsEnabledVisitEdit = value;
                 NotifyPropertyChanged("IsEnabledVisitEdit");
+            }
+        }
+        public bool IsSelectedTabItem
+        {
+            get
+            {
+                return _IsSelectedTabItem;
+            }
+            set
+            {
+                _IsSelectedTabItem = value;
+                NotifyPropertyChanged("IsSelectedTabItem");
             }
         }
 
@@ -135,7 +148,7 @@ namespace ClinicProject
             client = new HttpClient();
             GetApiAsync(RestFulServicePath, client, Visits);
             Visits.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(Visits_CollectionChanged);
-
+            IsSelectedTabItem = false;
         }
 
         void Visits_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)

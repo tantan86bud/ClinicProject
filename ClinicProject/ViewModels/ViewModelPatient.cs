@@ -26,9 +26,10 @@ namespace ClinicProject
         private ICommand _EditCommand;
         private ICommand _SaveCommand;
         private ICommand _DeleteCommand;
-        
+        private ICommand _AddVisitCommand;
+        public ViewModelVisit viewModelVisit;
 
-        
+
         private bool _expand;
         private bool _IsEnabledPatientEdit;
         private bool _AddVisitButton;
@@ -138,7 +139,18 @@ namespace ClinicProject
                 return _DeleteCommand;
             }
         }
-     
+        public ICommand AddVisitCommand
+        {
+            get
+            {
+                if (_AddVisitCommand == null)
+                {
+                    _AddVisitCommand = new RelayCommand(param => this.AddVisitPatient(), null);
+                }
+                return _AddVisitCommand;
+            }
+        }
+
 
 
         public ViewModelPatient()
@@ -256,6 +268,14 @@ namespace ClinicProject
             {
                 Patient pt = JsonConvert.DeserializeObject<Patient>(content);
                 Patient.Id = pt.Id;
+                var visitupdate = from uv in this.viewModelVisit.Visits
+                                where uv.Patient.Id == Patient.Id
+                                select uv;
+                foreach (var delv in visitupdate)
+                {
+                    delv.Patient.Name=Patient.Name;
+                   
+                }
             }
             catch
             {
@@ -279,8 +299,30 @@ namespace ClinicProject
         {
            
             var mes = await client.DeleteAsync(path);
+
+            var visitdel = (from dv in this.viewModelVisit.Visits
+                           where dv.Patient.Id == patient.Id
+                           select dv).ToList();
+            foreach (var delv in visitdel)
+            {
+                this.viewModelVisit.Visits.Remove(delv);
+            }
             Patients.Remove(patient);
         }
-       
+
+        private void AddVisitPatient()
+        {
+            if (Patient != null)
+            {
+                this.viewModelVisit.IsSelectedTabItem = true;
+                this.viewModelVisit.Visit = new Visit();
+
+                this.viewModelVisit.Visit.Patient = Patient;
+                this.viewModelVisit.Expand = true;
+                this.viewModelVisit.IsEnabledVisitEdit = true;
+            }
+            
+        }
+
     }
 }

@@ -27,21 +27,7 @@ namespace ClinicProject
 
        
 
-        private void AddVisit_Click(object sender, RoutedEventArgs e)
-        {
-            if ((TabItemPatient.DataContext as ViewModelPatient).Patient != null)
-            {
-                TabControl.SelectedItem = TabItemVisit;
-            
-                (TabItemVisit.DataContext as ViewModelVisit).Visit = new Visit();
-
-                (TabItemVisit.DataContext as ViewModelVisit).Visit.Patient = (TabItemPatient.DataContext as ViewModelPatient).Patient;
-                (TabItemVisit.DataContext as ViewModelVisit).Expand = true;
-                (TabItemVisit.DataContext as ViewModelVisit).IsEnabledVisitEdit = true;
-            }
-          
-            
-        }
+        
 
        
 

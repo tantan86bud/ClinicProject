@@ -9,9 +9,10 @@
         Title="Регистрация пациентов и посещений" Height="450" Width="800"
          >
     <Window.Resources>
-       
-        <local:ViewModelPatient x:Key="ViewModelPatient"/>
-        <local:ViewModelVisit x:Key="ViewModelVisit"/>
+
+        <local:ViewModelClinic x:Key="ViewModelClinic"/>
+        <!--<local:ViewModelPatient x:Key="ViewModelPatient"/>
+        <local:ViewModelVisit x:Key="ViewModelVisit"/>-->
         <local:RadioBoolToIntConverter x:Key="radioBoolToIntConverter" />
         <local:GenderConverter x:Key="GenderConverter" />
         <local:RadioBoolToIntConverterTypeVisit x:Key="RadioBoolToIntConverterTypeVisit" />
@@ -31,12 +32,12 @@
 
         </ResourceDictionary>
         </Window.Resources>-->
-            
-    <Grid>
+
+    <Grid DataContext="{Binding Source={StaticResource ViewModelClinic}}">
 
 
         <TabControl Name="TabControl">
-            <TabItem Header="Картотека пациентов" Name="TabItemPatient"  DataContext="{Binding Source={StaticResource ViewModelPatient}}">
+            <TabItem Header="Картотека пациентов"  Name="TabItemPatient"  DataContext="{Binding Path=viewModelPatient}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"></RowDefinition>
@@ -58,7 +59,7 @@
                             <Image Source="Image\icons8-удалить-40.png"></Image>
                         </Button>
                         <Separator/>
-                        <Button  Width="35" Height="35" IsEnabled="{Binding AddVisitButton}" Name="AddVisit" Click="AddVisit_Click" >
+                        <Button  Width="35" Height="35" Command="{Binding AddVisitCommand}" IsEnabled="{Binding AddVisitButton}" Name="AddVisit" >
                             <Image Source="Image\icons8-добавить-свойство-40.png"></Image>
                         </Button>
                     </ToolBar>
@@ -104,7 +105,7 @@
                     </DataGrid>
                 </Grid>
             </TabItem>
-            <TabItem Header="Посещения" Name="TabItemVisit"   DataContext="{Binding Source={StaticResource ViewModelVisit}}">
+            <TabItem Header="Посещения" Name="TabItemVisit" IsSelected="{Binding Path=IsSelectedTabItem}"  DataContext="{Binding Path=viewModelVisit}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"></RowDefinition>
