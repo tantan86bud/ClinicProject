@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "9sgBfCzZmNU6qR+7bC522ENNTZpUlXjpt+0X6t5BepytFcyYfxxHKJI63lwUcdMqNoDpRXYNRx0DT+x1FwgnnA==",
+  "success": true,
+  "projectFilePath": "D:\\ClinicProject\\ClinicProject\\ClinicProject.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Asus\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512"
+  ],
+  "logs": []
+}
